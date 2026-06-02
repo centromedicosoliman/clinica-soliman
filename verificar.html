@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verificar Resultados | Clínica Soliman</title>
+  <meta name="description" content="Consulta tus resultados de análisis clínicos en línea. Ingresa tu código de muestra." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0B2340;
+      --navy-mid: #153558;
+      --navy-light: #1E4A78;
+      --gold: #C8A96E;
+      --gold-light: #E2C99A;
+      --cream: #F7F3EC;
+      --cream-dark: #EDE6D8;
+      --white: #FFFFFF;
+      --text-muted: #8A9BB0;
+      --text-body: #3A4A5C;
+      --success: #1A7A4A;
+      --success-bg: #F0FBF5;
+      --warn: #C07A10;
+      --warn-bg: #FFF8EC;
+      --danger: #B03020;
+      --danger-bg: #FFF2F0;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-body);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 68px;
+      background: var(--navy);
+      border-bottom: 1px solid rgba(200,169,110,0.15);
+    }
+
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-mark {
+      width: 36px; height: 36px; background: var(--gold); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-mark svg { width: 20px; height: 20px; fill: var(--navy); }
+    .nav-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .nav-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; color: var(--white); }
+    .nav-brand-sub { font-size: 10px; font-weight: 300; color: var(--gold-light); letter-spacing: 0.07em; text-transform: uppercase; }
+
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      font-size: 13px; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--gold-light); }
+    .nav-back svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      max-width: 680px; margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* ── HEADER ── */
+    .page-header { text-align: center; margin-bottom: 48px; }
+
+    .page-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(200,169,110,0.12);
+      border: 1px solid rgba(200,169,110,0.25);
+      color: var(--navy-light);
+      font-size: 11px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 2px;
+      margin-bottom: 20px;
+    }
+    .page-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px; font-weight: 600; color: var(--navy);
+      line-height: 1.12; margin-bottom: 14px;
+    }
+    .page-subtitle { font-size: 15px; font-weight: 300; color: var(--text-muted); line-height: 1.65; max-width: 420px; margin: 0 auto; }
+
+    /* ── SEARCH CARD ── */
+    .search-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 14px;
+      padding: 40px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+    }
+
+    .search-label {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .search-label svg { width: 14px; height: 14px; fill: var(--text-muted); }
+
+    .code-input {
+      width: 100%;
+      border: 2px solid var(--cream-dark);
+      border-radius: 10px;
+      padding: 18px 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 26px; font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--navy);
+      text-align: center;
+      text-transform: uppercase;
+      background: var(--cream);
+      transition: border-color .2s, background .2s;
+      outline: none;
+      margin-bottom: 8px;
+    }
+    .code-input:focus { border-color: var(--navy-light); background: var(--white); }
+    .code-input::placeholder { color: rgba(138,155,176,0.5); letter-spacing: 0.1em; font-size: 20px; }
+
+    .code-hint {
+      font-size: 12px; color: var(--text-muted); text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .search-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--navy);
+      color: var(--white);
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 500;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .search-btn:hover { background: var(--navy-light); transform: translateY(-1px); }
+    .search-btn:active { transform: translateY(0); }
+    .search-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .search-btn.loading { opacity: 0.7; pointer-events: none; }
+
+    /* spinner */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ALERT ── */
+    .alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 14px;
+    }
+    .alert svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .alert-error { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(176,48,32,0.15); }
+    .alert-info { background: #EFF6FF; color: #1E4A78; border: 1px solid rgba(30,74,120,0.15); }
+
+    /* ── RESULTS ── */
+    #results-section { display: none; }
+
+    .results-header {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 16px;
+    }
+
+    .results-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
+    }
+
+    .patient-code {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.15em;
+      color: var(--navy-light);
+      background: var(--cream);
+      padding: 6px 12px; border-radius: 6px;
+      display: inline-block; margin-bottom: 10px;
+    }
+
+    .patient-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 600; color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .patient-meta { font-size: 13px; color: var(--text-muted); display: flex; gap: 16px; flex-wrap: wrap; }
+    .patient-meta span { display: flex; align-items: center; gap: 5px; }
+    .patient-meta svg { width: 13px; height: 13px; fill: var(--text-muted); }
+
+    .result-status {
+      padding: 8px 16px; border-radius: 20px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap;
+    }
+    .status-ready { background: #E8F8EF; color: var(--success); }
+    .status-ready::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+
+    .results-info-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px; background: var(--cream-dark);
+      border-top: 1px solid var(--cream-dark);
+      border-radius: 0 0 8px 8px; overflow: hidden;
+      margin: 0 -32px -28px;
+    }
+
+    .info-cell {
+      background: var(--white); padding: 16px 20px;
+    }
+    .info-cell-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .info-cell-value { font-size: 14px; color: var(--navy); font-weight: 400; }
+
+    /* ── TEST GROUPS ── */
+    .test-group {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .test-group-header {
+      padding: 18px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--cream);
+      border-bottom: 1px solid var(--cream-dark);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .test-group-title { font-size: 15px; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+    .test-group-icon { width: 30px; height: 30px; background: var(--white); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+    .test-group-icon svg { width: 16px; height: 16px; fill: var(--navy-light); }
+
+    .test-group-chevron { width: 16px; height: 16px; fill: none; stroke: var(--text-muted); stroke-width: 2; transition: transform .2s; }
+    .test-group.open .test-group-chevron { transform: rotate(180deg); }
+    .test-group-count { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+
+    .test-group-body { display: none; }
+    .test-group.open .test-group-body { display: block; }
+
+    table.results-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .results-table thead th {
+      padding: 10px 24px;
+      text-align: left;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--cream);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .results-table tbody tr { border-bottom: 1px solid var(--cream-dark); }
+    .results-table tbody tr:last-child { border-bottom: none; }
+    .results-table tbody tr:hover { background: #FDFBF8; }
+
+    .results-table td { padding: 14px 24px; vertical-align: middle; color: var(--navy); }
+    .results-table .td-name { font-weight: 400; }
+    .results-table .td-value { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; }
+    .results-table .td-unit { color: var(--text-muted); font-size: 12px; }
+    .results-table .td-ref { font-size: 12px; color: var(--text-muted); }
+
+    .flag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 12px;
+    }
+    .flag-normal { background: #E8F8EF; color: var(--success); }
+    .flag-high { background: var(--danger-bg); color: var(--danger); }
+    .flag-low { background: var(--warn-bg); color: var(--warn); }
+
+    /* ── ACTIONS ── */
+    .results-actions {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .action-btn {
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none;
+      transition: transform .15s;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+    .action-btn-primary { background: var(--navy); color: var(--white); border: none; }
+    .action-btn-primary:hover { background: var(--navy-light); }
+    .action-btn-ghost { background: var(--white); color: var(--navy); border: 1px solid var(--cream-dark); }
+    .action-btn-ghost:hover { border-color: var(--navy); }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      border-radius: 10px;
+      padding: 20px 24px;
+      display: flex; gap: 16px;
+      align-items: flex-start;
+      margin-top: 20px;
+      font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    }
+    .info-box svg { width: 18px; height: 18px; fill: var(--gold); flex-shrink: 0; margin-top: 1px; }
+
+    /* ── HOW TO ── */
+    .how-to {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-top: 32px;
+    }
+
+    .how-to h3 { font-size: 14px; font-weight: 500; color: var(--navy); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .how-to h3 svg { width: 16px; height: 16px; fill: var(--gold); }
+
+    .how-steps { display: flex; gap: 0; }
+    .how-step { flex: 1; text-align: center; padding: 0 12px; position: relative; }
+    .how-step:not(:last-child)::after {
+      content: '';
+      position: absolute; top: 17px; right: -1px;
+      width: 50%; height: 1px;
+      background: var(--cream-dark);
+    }
+    .how-step:not(:first-child)::before {
+      content: '';
+      position: absolute; top: 17px; left: -1px;
+      width: 50%; height: 1px;
+      background: var(--cream-dark);
+    }
+    .how-step-num {
+      width: 34px; height: 34px;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 500;
+      margin: 0 auto 12px;
+      position: relative; z-index: 1;
+    }
+    .how-step-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── FOOTER ── */
+    .portal-footer {
+      text-align: center; margin-top: 60px;
+      padding-top: 24px; border-top: 1px solid var(--cream-dark);
+      font-size: 12px; color: var(--text-muted);
+    }
+    .portal-footer a { color: var(--navy-light); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .search-card { padding: 24px; }
+      .code-input { font-size: 20px; letter-spacing: 0.1em; }
+      .how-steps { flex-direction: column; gap: 16px; }
+      .how-step::after, .how-step::before { display: none; }
+      .results-table td, .results-table th { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+      </div>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Clínica Soliman</span>
+        <span class="nav-brand-sub">Centro Médico del Este</span>
+      </div>
+    </a>
+    <a href="index.html" class="nav-back">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver al inicio
+    </a>
+  </nav>
+
+  <main>
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-badge">Portal de Pacientes</div>
+      <h1 class="page-title">Consulta tus resultados</h1>
+      <p class="page-subtitle">Ingresa el código de muestra que recibiste al momento de realizar tu análisis clínico.</p>
+    </div>
+
+    <!-- SEARCH CARD -->
+    <div class="search-card">
+      <label class="search-label" for="codeInput">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Código de muestra
+      </label>
+      <input
+        type="text"
+        id="codeInput"
+        class="code-input"
+        placeholder="CSL-0000-0000"
+        maxlength="14"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <p class="code-hint">Ejemplo: CSL-2024-0001 · El código está en tu comprobante de laboratorio</p>
+
+      <button class="search-btn" id="searchBtn" onclick="buscarResultados()">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Consultar resultados
+      </button>
+
+      <div id="alertBox" style="display:none;"></div>
+    </div>
+
+    <!-- HOW TO -->
+    <div class="how-to">
+      <h3>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        ¿Cómo consulto mis resultados?
+      </h3>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-step-num">1</div>
+          <p class="how-step-text">Ubica tu comprobante de laboratorio y encuentra el código CSL</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">2</div>
+          <p class="how-step-text">Escríbelo en el campo de arriba y presiona "Consultar"</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">3</div>
+          <p class="how-step-text">Visualiza tus resultados y descárgalos si lo necesitas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS SECTION -->
+    <div id="results-section">
+      <div class="results-header">
+        <div class="results-top">
+          <div>
+            <div class="patient-code" id="res-code">CSL-2024-0001</div>
+            <div class="patient-name" id="res-name">Nombre del Paciente</div>
+            <div class="patient-meta">
+              <span id="res-age">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                35 años
+              </span>
+              <span id="res-doctor">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+                Dr. —
+              </span>
+            </div>
+          </div>
+          <span class="result-status status-ready">Resultados listos</span>
+        </div>
+
+        <div class="results-info-grid">
+          <div class="info-cell">
+            <p class="info-cell-label">Fecha de muestra</p>
+            <p class="info-cell-value" id="res-date">—</p>
+          </div>
+          <div class="info-cell">
+            <p class="info-cell-label">Tipo de análisis</p>
+            <p class="info-cell-value" id="res-type">—</p>
+          </div>
+          <div class="info-cell">
+            <p class="info-cell-label">Laboratorista</p>
+            <p class="info-cell-value" id="res-lab">—</p>
+          </div>
+          <div class="info-cell">
+            <p class="info-cell-label">Estado</p>
+            <p class="info-cell-value" style="color:var(--success);">Completado</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEST GROUPS RENDERED BY JS -->
+      <div id="test-groups-container"></div>
+
+      <div class="results-actions">
+        <button class="action-btn action-btn-primary" onclick="window.print()">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir / Descargar PDF
+        </button>
+        <button class="action-btn action-btn-ghost" onclick="resetSearch()">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+          Nueva consulta
+        </button>
+      </div>
+
+      <div class="info-box">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <div>
+          <strong style="color:var(--navy); font-size:13px;">Nota importante</strong><br/>
+          Estos resultados son de carácter confidencial y deben ser interpretados por un profesional de la salud. Si tienes dudas sobre tus resultados, comunícate con tu médico tratante o visítanos.
+        </div>
+      </div>
+    </div>
+
+    <div class="portal-footer">
+      <p>© 2024 Centro Médico del Este y Especialidades SRL · <a href="index.html">Inicio</a> · <a href="index.html#contacto">Contacto</a></p>
+      <p style="margin-top:6px;">Si tienes problemas para encontrar tus resultados, llámanos directamente.</p>
+    </div>
+  </main>
+
+  <script>
+    // ── FORMAT INPUT ──────────────────────────────────────────
+    const codeInput = document.getElementById('codeInput');
+    codeInput.addEventListener('input', function() {
+      let val = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      let formatted = '';
+      if (val.length > 0) formatted = val.slice(0, 3);
+      if (val.length > 3) formatted += '-' + val.slice(3, 7);
+      if (val.length > 7) formatted += '-' + val.slice(7, 11);
+      this.value = formatted;
+    });
+
+    codeInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') buscarResultados();
+    });
+
+    // ── MOCK DATA (reemplazar con llamada PHP real) ───────────
+    const mockData = {
+      'CSL-2024-0847': {
+        nombre: 'María González Pérez',
+        edad: '42 años',
+        doctor: 'Dra. Ramírez',
+        fecha: '28 mayo 2024',
+        tipo: 'Hemograma + Química',
+        laboratorista: 'Lic. Santos',
+        grupos: [
+          {
+            nombre: 'Hemograma Completo',
+            icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>',
+            examenes: [
+              { nombre: 'Hemoglobina', valor: '14.2', unidad: 'g/dL', referencia: '12.0 – 16.0', flag: 'normal' },
+              { nombre: 'Hematocrito', valor: '42.5', unidad: '%', referencia: '36 – 46', flag: 'normal' },
+              { nombre: 'Leucocitos', valor: '6,800', unidad: '/µL', referencia: '4,500 – 11,000', flag: 'normal' },
+              { nombre: 'Neutrófilos', valor: '65', unidad: '%', referencia: '50 – 70', flag: 'normal' },
+              { nombre: 'Linfocitos', valor: '28', unidad: '%', referencia: '20 – 40', flag: 'normal' },
+              { nombre: 'Plaquetas', valor: '245,000', unidad: '/µL', referencia: '150,000 – 400,000', flag: 'normal' },
+            ]
+          },
+          {
+            nombre: 'Química Sanguínea',
+            icon: '<path d="M19.5 3.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5zM19 19.09H5V4.91h14v14.18z"/>',
+            examenes: [
+              { nombre: 'Glucosa', valor: '95', unidad: 'mg/dL', referencia: '70 – 100', flag: 'normal' },
+              { nombre: 'Creatinina', valor: '0.9', unidad: 'mg/dL', referencia: '0.6 – 1.2', flag: 'normal' },
+              { nombre: 'Urea', valor: '28', unidad: 'mg/dL', referencia: '15 – 45', flag: 'normal' },
+              { nombre: 'Colesterol total', valor: '215', unidad: 'mg/dL', referencia: '< 200', flag: 'high' },
+              { nombre: 'Triglicéridos', valor: '142', unidad: 'mg/dL', referencia: '< 150', flag: 'normal' },
+              { nombre: 'HDL Colesterol', valor: '52', unidad: 'mg/dL', referencia: '> 40', flag: 'normal' },
+              { nombre: 'LDL Colesterol', valor: '134', unidad: 'mg/dL', referencia: '< 130', flag: 'high' },
+            ]
+          }
+        ]
+      }
+    };
+
+    // ── SEARCH ───────────────────────────────────────────────
+    function buscarResultados() {
+      const code = document.getElementById('codeInput').value.trim().toUpperCase();
+      const btn = document.getElementById('searchBtn');
+      const alertBox = document.getElementById('alertBox');
+
+      alertBox.style.display = 'none';
+      document.getElementById('results-section').style.display = 'none';
+
+      if (!code || code.length < 12) {
+        showAlert('Por favor ingresa un código válido (ej: CSL-2024-0847)', 'error');
+        return;
+      }
+
+      // Loading state
+      btn.innerHTML = '<div class="spinner"></div> Consultando...';
+      btn.classList.add('loading');
+
+      // Simulate API call (replace with actual PHP fetch)
+      setTimeout(() => {
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Consultar resultados';
+        btn.classList.remove('loading');
+
+        // ── En producción: reemplazar este bloque con fetch a PHP ──
+        // fetch('api/resultados.php?codigo=' + encodeURIComponent(code))
+        //   .then(r => r.json()).then(data => renderResults(data))
+        //   .catch(() => showAlert('Error de conexión', 'error'));
+
+        if (mockData[code]) {
+          renderResults(code, mockData[code]);
+        } else {
+          showAlert('No encontramos resultados para el código <strong>' + code + '</strong>. Verifica que esté escrito correctamente o comunícate con el laboratorio.', 'error');
+        }
+      }, 1400);
+    }
+
+    function showAlert(msg, type) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.className = 'alert alert-' + (type === 'error' ? 'error' : 'info');
+      alertBox.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <span>${msg}</span>
+      `;
+      alertBox.style.display = 'flex';
+    }
+
+    function renderResults(code, data) {
+      // Fill header
+      document.getElementById('res-code').textContent = code;
+      document.getElementById('res-name').textContent = data.nombre;
+      document.getElementById('res-age').innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="var(--text-muted)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg> ${data.edad}`;
+      document.getElementById('res-doctor').textContent = data.doctor;
+      document.getElementById('res-date').textContent = data.fecha;
+      document.getElementById('res-type').textContent = data.tipo;
+      document.getElementById('res-lab').textContent = data.laboratorista;
+
+      // Render groups
+      const container = document.getElementById('test-groups-container');
+      container.innerHTML = '';
+
+      data.grupos.forEach((grupo, i) => {
+        const flagLabels = { normal: '✓ Normal', high: '↑ Alto', low: '↓ Bajo' };
+        const flagClasses = { normal: 'flag-normal', high: 'flag-high', low: 'flag-low' };
+
+        const rows = grupo.examenes.map(ex => `
+          <tr>
+            <td class="td-name">${ex.nombre}</td>
+            <td class="td-value">${ex.valor}</td>
+            <td class="td-unit">${ex.unidad}</td>
+            <td class="td-ref">${ex.referencia}</td>
+            <td><span class="flag ${flagClasses[ex.flag]}">${flagLabels[ex.flag]}</span></td>
+          </tr>
+        `).join('');
+
+        const div = document.createElement('div');
+        div.className = 'test-group' + (i === 0 ? ' open' : '');
+        div.innerHTML = `
+          <div class="test-group-header" onclick="toggleGroup(this.parentElement)">
+            <div class="test-group-title">
+              <div class="test-group-icon"><svg viewBox="0 0 24 24" fill="var(--navy-light)" width="16" height="16">${grupo.icon}</svg></div>
+              ${grupo.nombre}
+              <span class="test-group-count">${grupo.examenes.length} pruebas</span>
+            </div>
+            <svg class="test-group-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="test-group-body">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Prueba</th>
+                  <th>Resultado</th>
+                  <th>Unidad</th>
+                  <th>Referencia</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // Show
+      const section = document.getElementById('results-section');
+      section.style.display = 'block';
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function toggleGroup(el) {
+      el.classList.toggle('open');
+    }
+
+    function resetSearch() {
+      document.getElementById('results-section').style.display = 'none';
+      document.getElementById('alertBox').style.display = 'none';
+      document.getElementById('codeInput').value = '';
+      document.getElementById('codeInput').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
